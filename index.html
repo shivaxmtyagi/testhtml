@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Authentication</title>
     <style>
         /* Base reset and styling */
         * {
@@ -17,21 +17,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f4f7f6;
+            padding: 20px;
         }
 
-        /* Login Container */
-        .login-container {
+        /* Container */
+        .auth-container {
             background-color: #ffffff;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            transition: height 0.3s ease;
         }
 
-        .login-container h2 {
+        .auth-container h2 {
             text-align: center;
             margin-bottom: 24px;
             color: #333333;
@@ -39,7 +41,7 @@
 
         /* Form Group Styling */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .input-group label {
@@ -65,8 +67,8 @@
             box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
         }
 
-        /* Submit Button */
-        button {
+        /* Buttons */
+        .btn-primary {
             width: 100%;
             padding: 12px;
             background-color: #007BFF;
@@ -77,16 +79,66 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
 
-        button:hover {
+        .btn-primary:hover {
             background-color: #0056b3;
+        }
+
+        /* Divider styling */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #777777;
+            font-size: 14px;
+        }
+
+        .divider::before, 
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: 10px;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: 10px;
+        }
+
+        /* Social Login Buttons */
+        .social-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            background-color: #ffffff;
+            color: #333333;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #aaaaaa;
+        }
+
+        .social-btn:last-of-type {
+            margin-bottom: 0;
         }
 
         /* Helper Text */
         .helper-text {
             text-align: center;
-            margin-top: 16px;
+            margin-top: 24px;
             font-size: 14px;
             color: #777777;
         }
@@ -94,35 +146,88 @@
         .helper-text a {
             color: #007BFF;
             text-decoration: none;
+            cursor: pointer;
         }
 
         .helper-text a:hover {
             text-decoration: underline;
         }
+
+        /* Utility class to hide forms */
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Welcome Back</h2>
-        <form action="#" method="POST">
-            <div class="input-group">
-                <label for="username">Username or Email</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            
-            <button type="submit">Sign In</button>
-        </form>
+    <div class="auth-container">
         
-        <div class="helper-text">
-            <p>Don't have an account? <a href="#">Sign up here</a></p>
+        <div id="login-section">
+            <h2>Welcome Back</h2>
+            <form action="#" method="POST">
+                <div class="input-group">
+                    <label for="login-username">Username or Email</label>
+                    <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            
+            <div class="helper-text">
+                <p>Don't have an account? <a onclick="toggleAuth()">Sign up here</a></p>
+            </div>
         </div>
+
+        <div id="signup-section" class="hidden">
+            <h2>Create an Account</h2>
+            <form action="#" method="POST">
+                
+                <div class="input-group">
+                    <label for="signup-fullname">Full Name</label>
+                    <input type="text" id="signup-fullname" name="fullname" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" name="password" placeholder="Create a strong password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+
+            <div class="divider">OR</div>
+
+            <button class="social-btn" type="button">Continue with Google</button>
+            <button class="social-btn" type="button">Continue with Microsoft</button>
+            
+            <div class="helper-text">
+                <p>Already have an account? <a onclick="toggleAuth()">Sign in here</a></p>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        function toggleAuth() {
+            const loginSection = document.getElementById('login-section');
+            const signupSection = document.getElementById('signup-section');
+
+            // Toggle the 'hidden' class on both sections
+            loginSection.classList.toggle('hidden');
+            signupSection.classList.toggle('hidden');
+        }
+    </script>
 
 </body>
 </html>
